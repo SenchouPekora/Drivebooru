@@ -37,6 +37,9 @@
             cursor: not-allowed;
         }
     </style>
+</head>
+<body>
+    <div id="image-container"></div> <!-- New image container -->
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -52,7 +55,8 @@
         };
 
         function displayPage(pageNumber) {
-            document.body.innerHTML = ''; // Clear the current page
+            var imageContainer = document.getElementById('image-container'); // Get the image container
+            imageContainer.innerHTML = ''; // Clear the image container
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -70,7 +74,7 @@
 
                 a.appendChild(img);
 
-                document.body.appendChild(a);
+                imageContainer.appendChild(a); // Append to the image container
             });
 
             displayPagination();
@@ -95,6 +99,10 @@
             for (let i = start; i <= end; i++) {
                 createButton(paginationDiv, i.toString(), i);
             }
+
+        }
+
+            function createButton(container, text, pageNumber) {
 
             // Create a "forward" button
             createButton(paginationDiv, '>', currentPage + 1);
