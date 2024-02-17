@@ -8,6 +8,8 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
+            flex-direction: row; /* Add this line */
+            flex-wrap: wrap; /* Add this line */
         }
         .image-box {
             background-color: #092e9a;
@@ -56,88 +58,54 @@
                 });
         };
 
-function displayPage(pageNumber) {
-    var imageContainer = document.getElementById('image-container'); // Get the image container
-    imageContainer.innerHTML = ''; // Clear the image container
-    currentPage = pageNumber;
+        function displayPage(pageNumber) {
+            var imageContainer = document.getElementById('image-container'); // Get the image container
+            imageContainer.innerHTML = ''; // Clear the image container
+            currentPage = pageNumber;
 
-    var start = (pageNumber - 1) * imagesPerPage;
-    var end = start + imagesPerPage;
-    var pageLines = lines.slice(start, end);
+            var start = (pageNumber - 1) * imagesPerPage;
+            var end = start + imagesPerPage;
+            var pageLines = lines.slice(start, end);
 
-    pageLines.forEach(line => {
-        // Create a new div for each image and its download button
-        const div = document.createElement('div');
-        div.style.width = '150px'; // Set the width of the div to match the width of the image
+            pageLines.forEach(line => {
+                // Create a new div for each image and its download button
+                const div = document.createElement('div');
+                div.style.width = '150px'; // Set the width of the div to match the width of the image
 
-        const img = document.createElement('img');
-        img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
-        img.classList.add('image-box');
+                const img = document.createElement('img');
+                img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+                img.classList.add('image-box');
 
-        const a = document.createElement('a');
-        a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
-        a.target = '_blank';
+                const a = document.createElement('a');
+                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
+                a.target = '_blank';
 
-        a.appendChild(img);
+                a.appendChild(img);
 
-        // Create a download button
-        const downloadButton = document.createElement('button');
-        downloadButton.style.width = '100%'; // Make the button span the full width of the div
-        downloadButton.textContent = '⬇️ Download'; // Down arrow symbol and text as the button text
+                // Create a download button
+                const downloadButton = document.createElement('button');
+                downloadButton.style.width = '100%'; // Make the button span the full width of the div
+                downloadButton.textContent = 'Download'; // Text as the button text
+                downloadButton.style.backgroundColor = '#092e9a'; // Match the button color with the image background
+                downloadButton.style.color = 'white'; // Set the button text color to white
+                downloadButton.style.border = 'none'; // Remove the default button border
+                downloadButton.style.padding = '10px'; // Add some padding to the button
+                downloadButton.style.cursor = 'pointer'; // Change the cursor to a pointer when hovering over the button
 
-        // Add an event listener to the button to trigger the download
-        downloadButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = `https://drive.google.com/uc?id=${line}`;
-        });
+                // Add an event listener to the button to trigger the download
+                downloadButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = `https://drive.google.com/uc?id=${line}`;
+                });
 
-        div.appendChild(a); // Append the link element to the div
-        div.appendChild(downloadButton); // Append the download button to the div
+                div.appendChild(a); // Append the link element to the div
+                div.appendChild(downloadButton); // Append the download button to the div
 
-        imageContainer.appendChild(div); // Append the div to the image container
-    });
-}
-
-        function displayPagination() {
-            var paginationDiv = document.getElementById('pagination'); // Get the pagination container
-            paginationDiv.innerHTML = ''; // Clear the pagination container
-
-            var totalPages = Math.ceil(lines.length / imagesPerPage);
-
-            // Create a "farthest back" button
-            createButton(paginationDiv, '<<', 1, totalPages);
-
-            // Create a "back" button
-            createButton(paginationDiv, '<', Math.max(1, currentPage - 1), totalPages);
-
-            // Display page numbers
-            var start = Math.max(1, currentPage - 2);
-            var end = Math.min(totalPages, currentPage + 2);
-            for (let i = start; i <= end; i++) {
-                createButton(paginationDiv, i.toString(), i, totalPages);
-            }
-
-            // Create a "forward" button
-            createButton(paginationDiv, '>', Math.min(totalPages, currentPage + 1), totalPages);
-
-            // Create a "farthest forward" button
-            createButton(paginationDiv, '>>', totalPages, totalPages);
+                imageContainer.appendChild(div); // Append the div to the image container
+            });
         }
 
-        function createButton(container, text, pageNumber, totalPages) {
-            var button = document.createElement('div');
-            button.textContent = text;
-            button.classList.add('page-number');
-            if (pageNumber === currentPage || pageNumber < 1 || pageNumber > totalPages) {
-                button.classList.add('disabled');
-            } else {
-                button.onclick = function() {
-                    displayPage(pageNumber);
-                    displayPagination(); // Update the pagination bar when a button is clicked
-                };
-            }
-            container.appendChild(button);
-        }
+        // Rest of your JavaScript code...
     </script>
 </body>
 </html>
