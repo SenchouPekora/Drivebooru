@@ -2,6 +2,18 @@
 <html>
 <head>
     <title>Image Gallery</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1E3A8A; /* Dark blue */
+        }
+        .image-box {
+            background-color: #3B82F6; /* Lighter blue */
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px;
+        }
+    </style>
     <script>
         window.onload = function() {
             fetch('list.txt')
@@ -14,6 +26,7 @@
                     lines.forEach(line => {
                         const img = document.createElement('img');
                         img.src = `https://drive.google.com/thumbnail?id=${line.trim()}&sz=w150`;
+                        img.classList.add('image-box');
 
                         // Create an anchor element
                         const a = document.createElement('a');
