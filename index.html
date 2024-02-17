@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Drivebooru</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #0f1936;
@@ -20,11 +19,15 @@
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #0f1936;
         }
         .page-number {
-            margin: 0 10px;
+            margin: 10px;
             cursor: pointer;
-            padding: 10px;
+            padding: 10px 20px; /* Adjusted padding */
             border-radius: 5px;
             background-color: #092e9a;
             color: white;
