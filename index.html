@@ -58,6 +58,7 @@
                 .then(data => {
                     lines = data.split('\n').filter(line => line.trim());
                     displayPage(currentPage);
+                    displayPagination(); // Move this inside the fetch promise chain
                 });
         };
 
@@ -105,7 +106,53 @@
             displayPagination();
         }
 
-        // Rest of your JavaScript code...
+        function displayPagination() {
+            var paginationDiv = document.getElementById('pagination');
+            if (!paginationDiv) {
+                paginationDiv = document.createElement('div');
+                paginationDiv.id = 'pagination';
+                document.body.appendChild(paginationDiv);
+            } else {
+                paginationDiv.innerHTML = ''; // Clear the pagination div
+            }
+
+            var totalPages = Math.ceil(lines.length / imagesPerPage);
+
+            // Create a "farthest back" button
+            createButton(paginationDiv, '<<', 1);
+
+            // Create a "back" button
+            createButton(paginationDiv, '<', currentPage - 1);
+
+            // Display page numbers
+            var start = Math.max(1, currentPage - 2);
+            var end = Math.min(totalPages, start + 4);
+            start = Math.max(1, end - 4); // Adjust start if end is less than start + 4
+            for (let i = start; i <= end; i++) {
+                createButton(paginationDiv, i.toString(), i);
+            }
+
+            // Create a "forward" button
+            createButton(paginationDiv, '>', currentPage + 1);
+
+            // Create a "farthest forward" button
+            createButton(paginationDiv, '>>', totalPages);
+        }
+
+        function createButton(container, text, pageNumber) {
+            var button = document.createElement('div');
+            button.textContent = text;
+            button.classList.add('page-number');
+            if (pageNumber === currentPage || pageNumber < 1 || pageNumber > totalPages) {
+                button.classList.add('disabled');
+            } else {
+                button.onclick = function() {
+                    displayPage(pageNumber);
+                    displayPagination(); // Update the pagination bar when a button is clicked
+                };
+            }
+            container.appendChild(button);
+        }
     </script>
 </head>
 <body>
