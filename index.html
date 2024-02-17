@@ -11,9 +11,10 @@
         }
         .image-box {
             background-color: #092e9a;
-            padding: 10px;
+            padding: 20px; /* Increased padding */
             border-radius: 10px;
             margin: 10px;
+            flex: 1 0 12%; /* Adjust this value to control the number of images per row */
         }
         #pagination {
             display: flex;
@@ -39,11 +40,11 @@
     </style>
 </head>
 <body>
-    <div id="image-container"></div>
-    <div id="pagination"></div>
+    <div id="image-container"></div> <!-- New image container -->
+    <div id="pagination"></div> <!-- New pagination container -->
     <script>
         var currentPage = 1;
-        var imagesPerPage = 100;
+        var imagesPerPage = 64; // Changed from 100 to 64
         var lines = [];
 
         window.onload = function() {
@@ -52,13 +53,13 @@
                 .then(data => {
                     lines = data.split('\n').filter(line => line.trim());
                     displayPage(currentPage);
-                    displayPagination();
+                    displayPagination(); // Move this inside the fetch promise chain
                 });
         };
 
         function displayPage(pageNumber) {
-            var imageContainer = document.getElementById('image-container');
-            imageContainer.innerHTML = '';
+            var imageContainer = document.getElementById('image-container'); // Get the image container
+            imageContainer.innerHTML = ''; // Clear the image container
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -71,40 +72,38 @@
                 img.classList.add('image-box');
 
                 const a = document.createElement('a');
-                a.href = `javascript:void(0)`;
-                a.onclick = function() {
-                    window.open(`viewer.html?id=${line}`, '_blank');
-                };
+                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
+                a.target = '_blank';
 
                 a.appendChild(img);
 
-                imageContainer.appendChild(a);
+                imageContainer.appendChild(a); // Append to the image container
             });
         }
 
         function displayPagination() {
-            var paginationDiv = document.getElementById('pagination');
-            paginationDiv.innerHTML = '';
+            var paginationDiv = document.getElementById('pagination'); // Get the pagination container
+            paginationDiv.innerHTML = ''; // Clear the pagination container
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
-            
+            // Create a "farthest back" button
             createButton(paginationDiv, '<<', 1, totalPages);
 
-            
+            // Create a "back" button
             createButton(paginationDiv, '<', Math.max(1, currentPage - 1), totalPages);
 
-            
+            // Display page numbers
             var start = Math.max(1, currentPage - 2);
             var end = Math.min(totalPages, currentPage + 2);
             for (let i = start; i <= end; i++) {
                 createButton(paginationDiv, i.toString(), i, totalPages);
             }
 
-            
+            // Create a "forward" button
             createButton(paginationDiv, '>', Math.min(totalPages, currentPage + 1), totalPages);
 
-            
+            // Create a "farthest forward" button
             createButton(paginationDiv, '>>', totalPages, totalPages);
         }
 
@@ -117,7 +116,7 @@
             } else {
                 button.onclick = function() {
                     displayPage(pageNumber);
-                    displayPagination();
+                    displayPagination(); // Update the pagination bar when a button is clicked
                 };
             }
             container.appendChild(button);
