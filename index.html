@@ -5,10 +5,13 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #1E3A8A; /* Dark blue */
+            background-color: #1E3A8A;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
         }
         .image-box {
-            background-color: #3B82F6; /* Lighter blue */
+            background-color: #3B82F6;
             padding: 10px;
             border-radius: 10px;
             margin: 10px;
@@ -19,24 +22,19 @@
             fetch('list.txt')
                 .then(response => response.text())
                 .then(data => {
-                    // Split the file content into lines
                     const lines = data.split('\n');
 
-                    // For each line (ID), create an img element and append it to the body
                     lines.forEach(line => {
                         const img = document.createElement('img');
                         img.src = `https://drive.google.com/thumbnail?id=${line.trim()}&sz=w150`;
                         img.classList.add('image-box');
 
-                        // Create an anchor element
                         const a = document.createElement('a');
                         a.href = `https://drive.google.com/uc?export=view&id=${line.trim()}`;
                         a.target = '_blank';
 
-                        // Append the img element to the anchor element
                         a.appendChild(img);
 
-                        // Append the anchor element to the body
                         document.body.appendChild(a);
                     });
                 });
