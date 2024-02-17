@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Gallery</title>
+    <script>
+        window.onload = function() {
+            fetch('list.txt')
+                .then(response => response.text())
+                .then(data => {
+                    // Split the file content into lines
+                    const lines = data.split('\n');
+
+                    // For each line (ID), create an img element and append it to the body
+                    lines.forEach(line => {
+                        const img = document.createElement('img');
+                        img.src = `https://drive.google.com/thumbnail?id=${line.trim()}&sz=w150`;
+                        document.body.appendChild(img);
+                    });
+                });
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
