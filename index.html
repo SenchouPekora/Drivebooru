@@ -1,38 +1,109 @@
-function displayPagination() {
-    var paginationDiv = document.createElement('div');
-    paginationDiv.id = 'pagination';
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drivebooru</title>
+    <style>
+        body {
+            background-color: #0f1936;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .image-box {
+            background-color: #092e9a;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        #pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .page-number {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var currentPage = 1;
+        var imagesPerPage = 100;
+        var lines = [];
 
-    var totalPages = Math.ceil(lines.length / imagesPerPage);
-
-    // Create a previous page arrow
-    if (currentPage > 1) {
-        var prevDiv = document.createElement('div');
-        prevDiv.textContent = '<';
-        prevDiv.onclick = function() {
-            displayPage(currentPage - 1);
+        window.onload = function() {
+            fetch('list.txt')
+                .then(response => response.text())
+                .then(data => {
+                    lines = data.split('\n').filter(line => line.trim());
+                    displayPage(currentPage);
+                });
         };
-        paginationDiv.appendChild(prevDiv);
-    }
 
-    // Display page numbers
-    for (let i = 1; i <= totalPages; i++) {
-        var pageNumberDiv = document.createElement('div');
-        pageNumberDiv.textContent = i;
-        pageNumberDiv.onclick = function() {
-            displayPage(i);
-        };
-        paginationDiv.appendChild(pageNumberDiv);
-    }
+        function displayPage(pageNumber) {
+            document.body.innerHTML = ''; // Clear the current page
+            currentPage = pageNumber;
 
-    // Create a next page arrow
-    if (currentPage < totalPages) {
-        var nextDiv = document.createElement('div');
-        nextDiv.textContent = '>';
-        nextDiv.onclick = function() {
-            displayPage(currentPage + 1);
-        };
-        paginationDiv.appendChild(nextDiv);
-    }
+            var start = (pageNumber - 1) * imagesPerPage;
+            var end = start + imagesPerPage;
+            var pageLines = lines.slice(start, end);
 
-    document.body.appendChild(paginationDiv);
-}
+            pageLines.forEach(line => {
+                const img = document.createElement('img');
+                img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+                img.classList.add('image-box');
+
+                const a = document.createElement('a');
+                a.href = `https://drive.google.com/uc?export=view&id=${line}`;
+                a.target = '_blank';
+
+                a.appendChild(img);
+
+                document.body.appendChild(a);
+            });
+
+            displayPagination();
+        }
+
+        function displayPagination() {
+            var paginationDiv = document.createElement('div');
+            paginationDiv.id = 'pagination';
+
+            var totalPages = Math.ceil(lines.length / imagesPerPage);
+
+            // Create a previous page arrow
+            if (currentPage > 1) {
+                var prevDiv = document.createElement('div');
+                prevDiv.textContent = '<';
+                prevDiv.onclick = function() {
+                    displayPage(currentPage - 1);
+                };
+                paginationDiv.appendChild(prevDiv);
+            }
+
+            // Display page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                var pageNumberDiv = document.createElement('div');
+                pageNumberDiv.textContent = i;
+                pageNumberDiv.onclick = function() {
+                    displayPage(i);
+                };
+                paginationDiv.appendChild(pageNumberDiv);
+            }
+
+            // Create a next page arrow
+            if (currentPage < totalPages) {
+                var nextDiv = document.createElement('div');
+                nextDiv.textContent = '>';
+                nextDiv.onclick = function() {
+                    displayPage(currentPage + 1);
+                };
+                paginationDiv.appendChild(nextDiv);
+            }
+
+            document.body.appendChild(paginationDiv);
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
