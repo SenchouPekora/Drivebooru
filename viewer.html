@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Drivebooru</title>
+    <title>Image Viewer</title>
     <style>
         body {
             display: flex;
@@ -12,7 +12,7 @@
             margin: 0;
             background-color: #0f1936;
         }
-        img {
+        iframe {
             max-width: 100%;
             height: auto;
         }
@@ -27,12 +27,12 @@
     </style>
 </head>
 <body>
-    <img id="image" src="">
+    <iframe id="image" src="" width="640" height="480"></iframe>
     <button id="download">Download</button>
     <script>
         var params = new URLSearchParams(window.location.search);
         var id = params.get('id');
-        var imageUrl = `https://drive.usercontent.google.com/download?id=${id}`;
+        var imageUrl = `https://drive.google.com/file/d/${id}/preview`;
         document.getElementById('image').src = imageUrl;
         document.getElementById('download').onclick = function() {
             window.location.href = `https://drive.google.com/uc?export=download&id=${id}`;
