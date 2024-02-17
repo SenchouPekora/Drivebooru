@@ -56,29 +56,38 @@
                 });
         };
 
-        function displayPage(pageNumber) {
-            var imageContainer = document.getElementById('image-container'); // Get the image container
-            imageContainer.innerHTML = ''; // Clear the image container
-            currentPage = pageNumber;
+function displayPage(pageNumber) {
+    var imageContainer = document.getElementById('image-container'); // Get the image container
+    imageContainer.innerHTML = ''; // Clear the image container
+    currentPage = pageNumber;
 
-            var start = (pageNumber - 1) * imagesPerPage;
-            var end = start + imagesPerPage;
-            var pageLines = lines.slice(start, end);
+    var start = (pageNumber - 1) * imagesPerPage;
+    var end = start + imagesPerPage;
+    var pageLines = lines.slice(start, end);
 
-            pageLines.forEach(line => {
-                const img = document.createElement('img');
-                img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
-                img.classList.add('image-box');
+    pageLines.forEach(line => {
+        const img = document.createElement('img');
+        img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+        img.classList.add('image-box');
 
-                const a = document.createElement('a');
-                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
-                a.target = '_blank';
+        const a = document.createElement('a');
+        a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
+        a.target = '_blank';
 
-                a.appendChild(img);
+        a.appendChild(img);
 
-                imageContainer.appendChild(a); // Append to the image container
-            });
-        }
+        // Create a download button
+        const downloadButton = document.createElement('a');
+        downloadButton.href = `https://drive.google.com/uc?id=${line}`; // Link to the image file
+        downloadButton.download = ''; // This will trigger the download
+        downloadButton.textContent = '⬇️'; // Down arrow symbol as the button text
+        downloadButton.style.display = 'block'; // Display the button below the image
+
+        a.appendChild(downloadButton); // Append the download button to the link element
+
+        imageContainer.appendChild(a); // Append to the image container
+    });
+}
 
         function displayPagination() {
             var paginationDiv = document.getElementById('pagination'); // Get the pagination container
