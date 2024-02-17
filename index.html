@@ -11,7 +11,7 @@
         }
         .image-box {
             background-color: #092e9a;
-            padding: 20px; /* Increased padding */
+            padding: 10px;
             border-radius: 10px;
             margin: 10px;
         }
@@ -39,8 +39,8 @@
     </style>
 </head>
 <body>
-    <div id="image-container"></div> <!-- New image container -->
-    <div id="pagination"></div> <!-- New pagination container -->
+    <div id="image-container"></div>
+    <div id="pagination"></div>
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -52,13 +52,13 @@
                 .then(data => {
                     lines = data.split('\n').filter(line => line.trim());
                     displayPage(currentPage);
-                    displayPagination(); // Move this inside the fetch promise chain
+                    displayPagination();
                 });
         };
 
         function displayPage(pageNumber) {
-            var imageContainer = document.getElementById('image-container'); // Get the image container
-            imageContainer.innerHTML = ''; // Clear the image container
+            var imageContainer = document.getElementById('image-container');
+            imageContainer.innerHTML = '';
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -71,40 +71,40 @@
                 img.classList.add('image-box');
 
                 const a = document.createElement('a');
-                a.href = `javascript:void(0)`; // Modified URL
+                a.href = `javascript:void(0)`;
                 a.onclick = function() {
                     window.open(`viewer.html?id=${line}`, '_blank');
                 };
 
                 a.appendChild(img);
 
-                imageContainer.appendChild(a); // Append to the image container
+                imageContainer.appendChild(a);
             });
         }
 
         function displayPagination() {
-            var paginationDiv = document.getElementById('pagination'); // Get the pagination container
-            paginationDiv.innerHTML = ''; // Clear the pagination container
+            var paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = '';
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
-            // Create a "farthest back" button
+            
             createButton(paginationDiv, '<<', 1, totalPages);
 
-            // Create a "back" button
+            
             createButton(paginationDiv, '<', Math.max(1, currentPage - 1), totalPages);
 
-            // Display page numbers
+            
             var start = Math.max(1, currentPage - 2);
             var end = Math.min(totalPages, currentPage + 2);
             for (let i = start; i <= end; i++) {
                 createButton(paginationDiv, i.toString(), i, totalPages);
             }
 
-            // Create a "forward" button
+            
             createButton(paginationDiv, '>', Math.min(totalPages, currentPage + 1), totalPages);
 
-            // Create a "farthest forward" button
+            
             createButton(paginationDiv, '>>', totalPages, totalPages);
         }
 
@@ -117,7 +117,7 @@
             } else {
                 button.onclick = function() {
                     displayPage(pageNumber);
-                    displayPagination(); // Update the pagination bar when a button is clicked
+                    displayPagination();
                 };
             }
             container.appendChild(button);
