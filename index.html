@@ -62,7 +62,15 @@
         };
 
         function displayPage(pageNumber) {
-            document.body.innerHTML = ''; // Clear the current page
+            var imagesDiv = document.getElementById('images');
+            if (!imagesDiv) {
+                imagesDiv = document.createElement('div');
+                imagesDiv.id = 'images';
+                document.body.appendChild(imagesDiv);
+            } else {
+                imagesDiv.innerHTML = ''; // Clear only the images div
+            }
+
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -91,15 +99,21 @@
                 div.appendChild(a);
                 div.appendChild(downloadButton); // Added the button to the div
 
-                document.body.appendChild(div);
+                imagesDiv.appendChild(div); // Append to the images div
             });
 
             displayPagination();
         }
 
         function displayPagination() {
-            var paginationDiv = document.createElement('div');
-            paginationDiv.id = 'pagination';
+            var paginationDiv = document.getElementById('pagination');
+            if (!paginationDiv) {
+                paginationDiv = document.createElement('div');
+                paginationDiv.id = 'pagination';
+                document.body.appendChild(paginationDiv);
+            } else {
+                paginationDiv.innerHTML = ''; // Clear the pagination div
+            }
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
@@ -122,8 +136,6 @@
 
             // Create a "farthest forward" button
             createButton(paginationDiv, '>>', totalPages);
-
-            document.body.appendChild(paginationDiv);
         }
 
         function createButton(container, text, pageNumber) {
