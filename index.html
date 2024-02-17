@@ -86,7 +86,9 @@
             var farthestBackDiv = document.createElement('div');
             farthestBackDiv.textContent = '<<';
             farthestBackDiv.onclick = function() {
-                displayPage(1);
+                if (currentPage !== 1) {
+                    displayPage(1);
+                }
             };
             farthestBackDiv.classList.add('page-number');
             if (currentPage === 1) {
@@ -98,7 +100,9 @@
             var backDiv = document.createElement('div');
             backDiv.textContent = '<';
             backDiv.onclick = function() {
-                displayPage(currentPage - 1);
+                if (currentPage !== 1) {
+                    displayPage(currentPage - 1);
+                }
             };
             backDiv.classList.add('page-number');
             if (currentPage === 1) {
@@ -124,7 +128,9 @@
             var forwardDiv = document.createElement('div');
             forwardDiv.textContent = '>';
             forwardDiv.onclick = function() {
-                displayPage(currentPage + 1);
+                if (currentPage !== totalPages) {
+                    displayPage(currentPage + 1);
+                }
             };
             forwardDiv.classList.add('page-number');
             if (currentPage === totalPages) {
@@ -136,7 +142,9 @@
             var farthestForwardDiv = document.createElement('div');
             farthestForwardDiv.textContent = '>>';
             farthestForwardDiv.onclick = function() {
-                displayPage(totalPages);
+                if (currentPage !== totalPages) {
+                    displayPage(totalPages);
+                }
             };
             farthestForwardDiv.classList.add('page-number');
             if (currentPage === totalPages) {
