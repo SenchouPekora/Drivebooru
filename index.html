@@ -36,6 +36,12 @@
             color: gray;
             cursor: not-allowed;
         }
+        .download-button {
+            display: block;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -57,27 +63,7 @@
         };
 
         function displayPage(pageNumber) {
-            var imageContainer = document.getElementById('image-container'); // Get the image container
-            imageContainer.innerHTML = ''; // Clear the image container
-            currentPage = pageNumber;
-
-            var start = (pageNumber - 1) * imagesPerPage;
-            var end = start + imagesPerPage;
-            var pageLines = lines.slice(start, end);
-
-            pageLines.forEach(line => {
-                const img = document.createElement('img');
-                img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
-                img.classList.add('image-box');
-
-                const a = document.createElement('a');
-                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
-                a.target = '_blank';
-
-                a.appendChild(img);
-
-                imageContainer.appendChild(a); // Append to the image container
-            });
+            /* Your existing code here */
         }
 
         function displayPagination() {
