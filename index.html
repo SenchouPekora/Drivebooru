@@ -36,13 +36,11 @@
             color: gray;
             cursor: not-allowed;
         }
-        .download-button {
-            display: block;
-            text-align: center;
-            color: white;
-            text-decoration: none;
-        }
     </style>
+</head>
+<body>
+    <div id="image-container"></div> <!-- New image container -->
+    <div id="pagination"></div> <!-- New pagination container -->
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -78,21 +76,8 @@
 
                 a.appendChild(img);
 
-                const downloadLink = document.createElement('a');
-                downloadLink.href = `https://drive.google.com/uc?id=${line}`; // Download URL
-                downloadLink.download = '';
-                downloadLink.textContent = '⬇️';
-                downloadLink.classList.add('download-button');
-
-                const container = document.createElement('div');
-                container.classList.add('image-box');
-                container.appendChild(a);
-                container.appendChild(downloadLink);
-
-                imageContainer.appendChild(container); // Append to the image container
+                imageContainer.appendChild(a); // Append to the image container
             });
-
-            displayPagination();
         }
 
         function displayPagination() {
