@@ -37,9 +37,6 @@
             cursor: not-allowed;
         }
     </style>
-</head>
-<body>
-    <div id="image-container"></div> <!-- New image container -->
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -81,8 +78,8 @@
         }
 
         function displayPagination() {
-            var paginationDiv = document.createElement('div');
-            paginationDiv.id = 'pagination';
+            var paginationDiv = document.getElementById('pagination'); // Get the pagination container
+            paginationDiv.innerHTML = ''; // Clear the pagination container
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
@@ -99,10 +96,6 @@
             for (let i = start; i <= end; i++) {
                 createButton(paginationDiv, i.toString(), i);
             }
-
-        }
-
-            function createButton(container, text, pageNumber) {
 
             // Create a "forward" button
             createButton(paginationDiv, '>', currentPage + 1);
@@ -129,5 +122,7 @@
     </script>
 </head>
 <body>
+    <div id="image-container"></div> <!-- New image container -->
+    <div id="pagination"></div> <!-- New pagination container -->
 </body>
 </html>
