@@ -3,41 +3,42 @@
 <head>
     <title>Drivebooru</title>
     <style>
-        body {
-            background-color: #0f1936;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            flex-direction: row; /* Add this line */
-            flex-wrap: wrap; /* Add this line */
-        }
-        .image-box {
-            background-color: #092e9a;
-            padding: 10px;
-            border-radius: 10px;
-            margin: 10px;
-        }
-        #pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #0f1936;
-        }
-        .page-number {
-            margin: 0 10px;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #092e9a;
-            color: white;
-        }
-        .disabled {
-            color: gray;
-            cursor: not-allowed;
-        }
+body {
+    background-color: #0f1936;
+    display: grid; /* Change this line */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Add this line */
+    gap: 10px; /* Add this line */
+    justify-items: center; /* Add this line */
+    padding: 10px; /* Add this line */
+}
+.image-box {
+    background-color: #092e9a;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+}
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #0f1936;
+}
+.page-number {
+    margin: 0 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #092e9a;
+    color: white;
+}
+.disabled {
+    color: gray;
+    cursor: not-allowed;
+}
+
     </style>
 </head>
 <body>
