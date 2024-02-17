@@ -90,18 +90,17 @@
             createButton(paginationDiv, '<<', 1, totalPages);
 
             // Create a "back" button
-            createButton(paginationDiv, '<', currentPage - 1, totalPages);
+            createButton(paginationDiv, '<', Math.max(1, currentPage - 1), totalPages);
 
             // Display page numbers
             var start = Math.max(1, currentPage - 2);
-            var end = Math.min(totalPages, start + 4);
-            start = Math.max(1, end - 4); // Adjust start if end is less than start + 4
+            var end = Math.min(totalPages, currentPage + 2);
             for (let i = start; i <= end; i++) {
                 createButton(paginationDiv, i.toString(), i, totalPages);
             }
 
             // Create a "forward" button
-            createButton(paginationDiv, '>', currentPage + 1, totalPages);
+            createButton(paginationDiv, '>', Math.min(totalPages, currentPage + 1), totalPages);
 
             // Create a "farthest forward" button
             createButton(paginationDiv, '>>', totalPages, totalPages);
@@ -116,6 +115,7 @@
             } else {
                 button.onclick = function() {
                     displayPage(pageNumber);
+                    displayPagination(); // Update the pagination bar when a button is clicked
                 };
             }
             container.appendChild(button);
