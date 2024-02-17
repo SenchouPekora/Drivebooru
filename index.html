@@ -87,27 +87,27 @@
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
             // Create a "farthest back" button
-            createButton(paginationDiv, '<<', 1);
+            createButton(paginationDiv, '<<', 1, totalPages);
 
             // Create a "back" button
-            createButton(paginationDiv, '<', currentPage - 1);
+            createButton(paginationDiv, '<', currentPage - 1, totalPages);
 
             // Display page numbers
             var start = Math.max(1, currentPage - 2);
             var end = Math.min(totalPages, start + 4);
             start = Math.max(1, end - 4); // Adjust start if end is less than start + 4
             for (let i = start; i <= end; i++) {
-                createButton(paginationDiv, i.toString(), i);
+                createButton(paginationDiv, i.toString(), i, totalPages);
             }
 
             // Create a "forward" button
-            createButton(paginationDiv, '>', currentPage + 1);
+            createButton(paginationDiv, '>', currentPage + 1, totalPages);
 
             // Create a "farthest forward" button
-            createButton(paginationDiv, '>>', totalPages);
+            createButton(paginationDiv, '>>', totalPages, totalPages);
         }
 
-        function createButton(container, text, pageNumber) {
+        function createButton(container, text, pageNumber, totalPages) {
             var button = document.createElement('div');
             button.textContent = text;
             button.classList.add('page-number');
