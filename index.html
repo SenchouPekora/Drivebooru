@@ -9,18 +9,18 @@
             flex-wrap: wrap;
             justify-content: space-around;
         }
-        .image-container { /* New class for the image container */
-            width: 150px;
+        .image-box {
             background-color: #092e9a;
             padding: 10px;
             border-radius: 10px;
             margin: 10px;
-            text-align: center;
         }
         #pagination {
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            position: fixed;
+            bottom: 0;
             width: 100%;
             background-color: #0f1936;
         }
@@ -36,17 +36,11 @@
             color: gray;
             cursor: not-allowed;
         }
-        .download-button {
-            display: block;
-            margin: 10px auto;
-            padding: 5px 10px;
-            background-color: #092e9a;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.8em; /* Smaller text */
-        }
     </style>
+</head>
+<body>
+    <div id="image-container"></div> <!-- New image container -->
+    <div id="pagination"></div> <!-- New pagination container -->
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -63,15 +57,8 @@
         };
 
         function displayPage(pageNumber) {
-            var imagesDiv = document.getElementById('images');
-            if (!imagesDiv) {
-                imagesDiv = document.createElement('div');
-                imagesDiv.id = 'images';
-                document.body.appendChild(imagesDiv);
-            } else {
-                imagesDiv.innerHTML = ''; // Clear only the images div
-            }
-
+            var imageContainer = document.getElementById('image-container'); // Get the image container
+            imageContainer.innerHTML = ''; // Clear the image container
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -81,65 +68,45 @@
             pageLines.forEach(line => {
                 const img = document.createElement('img');
                 img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+                img.classList.add('image-box');
 
                 const a = document.createElement('a');
-                a.href = `https://drive.google.com/uc?id=${line}`;
+                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
                 a.target = '_blank';
 
                 a.appendChild(img);
 
-                // Create a download button
-                const downloadButton = document.createElement('a');
-                downloadButton.href = `https://drive.google.com/uc?export=download&id=${line}`; // Modified URL for direct download
-                downloadButton.download = '';
-                downloadButton.textContent = 'Download';
-                downloadButton.classList.add('download-button');
-
-                const div = document.createElement('div');
-                div.classList.add('image-container'); // Use the new class
-                div.appendChild(a);
-                div.appendChild(downloadButton); // Added the button to the div
-
-                imagesDiv.appendChild(div); // Append to the images div
+                imageContainer.appendChild(a); // Append to the image container
             });
-
-            displayPagination();
         }
 
         function displayPagination() {
-            var paginationDiv = document.getElementById('pagination');
-            if (!paginationDiv) {
-                paginationDiv = document.createElement('div');
-                paginationDiv.id = 'pagination';
-                document.body.appendChild(paginationDiv);
-            } else {
-                paginationDiv.innerHTML = ''; // Clear the pagination div
-            }
+            var paginationDiv = document.getElementById('pagination'); // Get the pagination container
+            paginationDiv.innerHTML = ''; // Clear the pagination container
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
             // Create a "farthest back" button
-            createButton(paginationDiv, '<<', 1);
+            createButton(paginationDiv, '<<', 1, totalPages);
 
             // Create a "back" button
-            createButton(paginationDiv, '<', currentPage - 1);
+            createButton(paginationDiv, '<', Math.max(1, currentPage - 1), totalPages);
 
             // Display page numbers
             var start = Math.max(1, currentPage - 2);
-            var end = Math.min(totalPages, start + 4);
-            start = Math.max(1, end - 4); // Adjust start if end is less than start + 4
+            var end = Math.min(totalPages, currentPage + 2);
             for (let i = start; i <= end; i++) {
-                createButton(paginationDiv, i.toString(), i);
+                createButton(paginationDiv, i.toString(), i, totalPages);
             }
 
             // Create a "forward" button
-            createButton(paginationDiv, '>', currentPage + 1);
+            createButton(paginationDiv, '>', Math.min(totalPages, currentPage + 1), totalPages);
 
             // Create a "farthest forward" button
-            createButton(paginationDiv, '>>', totalPages);
+            createButton(paginationDiv, '>>', totalPages, totalPages);
         }
 
-        function createButton(container, text, pageNumber) {
+        function createButton(container, text, pageNumber, totalPages) {
             var button = document.createElement('div');
             button.textContent = text;
             button.classList.add('page-number');
@@ -154,7 +121,5 @@
             container.appendChild(button);
         }
     </script>
-</head>
-<body>
 </body>
 </html>
