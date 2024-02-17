@@ -14,9 +14,6 @@
             padding: 20px; /* Increased padding */
             border-radius: 10px;
             margin: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
         #pagination {
             display: flex;
@@ -77,15 +74,7 @@
                 a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
                 a.target = '_blank';
 
-                const downloadButton = document.createElement('button'); // New download button
-                downloadButton.textContent = 'Download';
-                downloadButton.onclick = function(e) {
-                    e.preventDefault();
-                    window.location.href = `https://drive.google.com/uc?export=download&id=${line}`;
-                };
-
                 a.appendChild(img);
-                a.appendChild(downloadButton); // Append the download button
 
                 imageContainer.appendChild(a); // Append to the image container
             });
