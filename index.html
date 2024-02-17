@@ -25,17 +25,20 @@
                     const lines = data.split('\n');
 
                     lines.forEach(line => {
-                        const img = document.createElement('img');
-                        img.src = `https://drive.google.com/thumbnail?id=${line.trim()}&sz=w150`;
-                        img.classList.add('image-box');
+                        line = line.trim();
+                        if (line) { 
+                            const img = document.createElement('img');
+                            img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+                            img.classList.add('image-box');
 
-                        const a = document.createElement('a');
-                        a.href = `https://drive.google.com/uc?export=view&id=${line.trim()}`;
-                        a.target = '_blank';
+                            const a = document.createElement('a');
+                            a.href = `https://drive.google.com/uc?export=view&id=${line}`;
+                            a.target = '_blank';
 
-                        a.appendChild(img);
+                            a.appendChild(img);
 
-                        document.body.appendChild(a);
+                            document.body.appendChild(a);
+                        }
                     });
                 });
         };
