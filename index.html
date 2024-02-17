@@ -43,10 +43,6 @@
             text-decoration: none;
         }
     </style>
-</head>
-<body>
-    <div id="image-container"></div> <!-- New image container -->
-    <div id="pagination"></div> <!-- New pagination container -->
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -63,7 +59,40 @@
         };
 
         function displayPage(pageNumber) {
-            /* Your existing code here */
+            var imageContainer = document.getElementById('image-container'); // Get the image container
+            imageContainer.innerHTML = ''; // Clear the image container
+            currentPage = pageNumber;
+
+            var start = (pageNumber - 1) * imagesPerPage;
+            var end = start + imagesPerPage;
+            var pageLines = lines.slice(start, end);
+
+            pageLines.forEach(line => {
+                const img = document.createElement('img');
+                img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+                img.classList.add('image-box');
+
+                const a = document.createElement('a');
+                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
+                a.target = '_blank';
+
+                a.appendChild(img);
+
+                const downloadLink = document.createElement('a');
+                downloadLink.href = `https://drive.google.com/uc?id=${line}`; // Download URL
+                downloadLink.download = '';
+                downloadLink.textContent = '⬇️';
+                downloadLink.classList.add('download-button');
+
+                const container = document.createElement('div');
+                container.classList.add('image-box');
+                container.appendChild(a);
+                container.appendChild(downloadLink);
+
+                imageContainer.appendChild(container); // Append to the image container
+            });
+
+            displayPagination();
         }
 
         function displayPagination() {
