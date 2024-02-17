@@ -9,18 +9,18 @@
             flex-wrap: wrap;
             justify-content: space-around;
         }
-        .image-container { /* New class for the image container */
-            width: 150px;
+        .image-box {
             background-color: #092e9a;
             padding: 10px;
             border-radius: 10px;
             margin: 10px;
-            text-align: center;
         }
         #pagination {
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            position: fixed;
+            bottom: 0;
             width: 100%;
             background-color: #0f1936;
         }
@@ -38,13 +38,13 @@
         }
         .download-button {
             display: block;
+            text-align: center;
             margin: 10px auto;
             padding: 5px 10px;
             background-color: #092e9a;
             color: white;
             border-radius: 5px;
             text-decoration: none;
-            font-size: 0.8em; /* Smaller text */
         }
     </style>
     <script>
@@ -62,15 +62,7 @@
         };
 
         function displayPage(pageNumber) {
-            var imagesDiv = document.getElementById('images');
-            if (!imagesDiv) {
-                imagesDiv = document.createElement('div');
-                imagesDiv.id = 'images';
-                document.body.appendChild(imagesDiv);
-            } else {
-                imagesDiv.innerHTML = ''; // Clear only the images div
-            }
-
+            document.body.innerHTML = ''; // Clear the current page
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -80,6 +72,7 @@
             pageLines.forEach(line => {
                 const img = document.createElement('img');
                 img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
+                img.classList.add('image-box');
 
                 const a = document.createElement('a');
                 a.href = `https://drive.google.com/uc?id=${line}`;
@@ -89,31 +82,24 @@
 
                 // Create a download button
                 const downloadButton = document.createElement('a');
-                downloadButton.href = `https://drive.google.com/uc?export=download&id=${line}`; // Modified URL for direct download
+                downloadButton.href = `https://drive.google.com/uc?id=${line}`;
                 downloadButton.download = '';
                 downloadButton.textContent = 'Download';
                 downloadButton.classList.add('download-button');
 
                 const div = document.createElement('div');
-                div.classList.add('image-container'); // Use the new class
                 div.appendChild(a);
-                div.appendChild(downloadButton); // Added the button to the div
+                div.appendChild(downloadButton);
 
-                imagesDiv.appendChild(div); // Append to the images div
+                document.body.appendChild(div);
             });
 
             displayPagination();
         }
 
         function displayPagination() {
-            var paginationDiv = document.getElementById('pagination');
-            if (!paginationDiv) {
-                paginationDiv = document.createElement('div');
-                paginationDiv.id = 'pagination';
-                document.body.appendChild(paginationDiv);
-            } else {
-                paginationDiv.innerHTML = ''; // Clear the pagination div
-            }
+            var paginationDiv = document.createElement('div');
+            paginationDiv.id = 'pagination';
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
@@ -136,6 +122,8 @@
 
             // Create a "farthest forward" button
             createButton(paginationDiv, '>>', totalPages);
+
+            document.body.appendChild(paginationDiv);
         }
 
         function createButton(container, text, pageNumber) {
