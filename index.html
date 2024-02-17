@@ -25,12 +25,16 @@
             background-color: #0f1936;
         }
         .page-number {
-            margin: 10px;
+            margin: 0 10px;
             cursor: pointer;
-            padding: 10px 20px; /* Adjusted padding */
+            padding: 10px 20px;
             border-radius: 5px;
             background-color: #092e9a;
             color: white;
+        }
+        .disabled {
+            color: gray;
+            cursor: not-allowed;
         }
     </style>
     <script>
@@ -78,16 +82,29 @@
 
             var totalPages = Math.ceil(lines.length / imagesPerPage);
 
-            // Create a previous page arrow
-            if (currentPage > 1) {
-                var prevDiv = document.createElement('div');
-                prevDiv.textContent = '<';
-                prevDiv.onclick = function() {
-                    displayPage(currentPage - 1);
-                };
-                prevDiv.classList.add('page-number');
-                paginationDiv.appendChild(prevDiv);
+            // Create a "farthest back" button
+            var farthestBackDiv = document.createElement('div');
+            farthestBackDiv.textContent = '<<';
+            farthestBackDiv.onclick = function() {
+                displayPage(1);
+            };
+            farthestBackDiv.classList.add('page-number');
+            if (currentPage === 1) {
+                farthestBackDiv.classList.add('disabled');
             }
+            paginationDiv.appendChild(farthestBackDiv);
+
+            // Create a "back" button
+            var backDiv = document.createElement('div');
+            backDiv.textContent = '<';
+            backDiv.onclick = function() {
+                displayPage(currentPage - 1);
+            };
+            backDiv.classList.add('page-number');
+            if (currentPage === 1) {
+                backDiv.classList.add('disabled');
+            }
+            paginationDiv.appendChild(backDiv);
 
             // Display page numbers
             for (let i = 1; i <= totalPages; i++) {
@@ -97,19 +114,35 @@
                     displayPage(i);
                 };
                 pageNumberDiv.classList.add('page-number');
+                if (i === currentPage) {
+                    pageNumberDiv.classList.add('disabled');
+                }
                 paginationDiv.appendChild(pageNumberDiv);
             }
 
-            // Create a next page arrow
-            if (currentPage < totalPages) {
-                var nextDiv = document.createElement('div');
-                nextDiv.textContent = '>';
-                nextDiv.onclick = function() {
-                    displayPage(currentPage + 1);
-                };
-                nextDiv.classList.add('page-number');
-                paginationDiv.appendChild(nextDiv);
+            // Create a "forward" button
+            var forwardDiv = document.createElement('div');
+            forwardDiv.textContent = '>';
+            forwardDiv.onclick = function() {
+                displayPage(currentPage + 1);
+            };
+            forwardDiv.classList.add('page-number');
+            if (currentPage === totalPages) {
+                forwardDiv.classList.add('disabled');
             }
+            paginationDiv.appendChild(forwardDiv);
+
+            // Create a "farthest forward" button
+            var farthestForwardDiv = document.createElement('div');
+            farthestForwardDiv.textContent = '>>';
+            farthestForwardDiv.onclick = function() {
+                displayPage(totalPages);
+            };
+            farthestForwardDiv.classList.add('page-number');
+            if (currentPage === totalPages) {
+                farthestForwardDiv.classList.add('disabled');
+            }
+            paginationDiv.appendChild(farthestForwardDiv);
 
             document.body.appendChild(paginationDiv);
         }
