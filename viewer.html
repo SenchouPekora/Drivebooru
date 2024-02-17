@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Image Viewer</title>
+    <title>Drivebooru</title>
     <style>
         body {
             display: flex;
@@ -13,11 +13,11 @@
             background-color: #0f1936;
         }
         iframe {
-        width: 100%; /* Full width */
-        height: 80%; /* Adjust as needed */
-        min-width: 300px; /* Minimum width */
-        min-height: 300px; /* Minimum height */
-        border: none; /* Remove the default border */
+        width: 100%;
+        height: 80%;
+        min-width: 300px;
+        min-height: 300px;
+        border: none;
     }
         button {
             margin-top: 20px;
@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-    <iframe id="image" src="" allowfullscreen></iframe> <!-- Allow fullscreen -->
+    <iframe id="image" src="" allowfullscreen></iframe>
     <button id="download">Download</button>
     <script>
         var params = new URLSearchParams(window.location.search);
