@@ -76,84 +76,50 @@
             displayPagination();
         }
 
-        function displayPagination() {
-            var paginationDiv = document.createElement('div');
-            paginationDiv.id = 'pagination';
+function displayPagination() {
+    var paginationDiv = document.createElement('div');
+    paginationDiv.id = 'pagination';
 
-            var totalPages = Math.ceil(lines.length / imagesPerPage);
+    var totalPages = Math.ceil(lines.length / imagesPerPage);
 
-            // Create a "farthest back" button
-            var farthestBackDiv = document.createElement('div');
-            farthestBackDiv.textContent = '<<';
-            farthestBackDiv.onclick = function() {
-                if (currentPage !== 1) {
-                    displayPage(1);
-                }
-            };
-            farthestBackDiv.classList.add('page-number');
-            if (currentPage === 1) {
-                farthestBackDiv.classList.add('disabled');
-            }
-            paginationDiv.appendChild(farthestBackDiv);
+    // Determine the start and end of the sliding window
+    var start = Math.max(1, currentPage - 2);
+    var end = Math.min(totalPages, start + 4);
+    start = Math.max(1, end - 4); // Adjust start if end is less than start + 4
 
-            // Create a "back" button
-            var backDiv = document.createElement('div');
-            backDiv.textContent = '<';
-            backDiv.onclick = function() {
-                if (currentPage !== 1) {
-                    displayPage(currentPage - 1);
-                }
-            };
-            backDiv.classList.add('page-number');
-            if (currentPage === 1) {
-                backDiv.classList.add('disabled');
-            }
-            paginationDiv.appendChild(backDiv);
+    // Create a "farthest back" button
+    createButton(paginationDiv, '<<', 1);
 
-            // Display page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                var pageNumberDiv = document.createElement('div');
-                pageNumberDiv.textContent = i;
-                pageNumberDiv.onclick = function() {
-                    displayPage(i);
-                };
-                pageNumberDiv.classList.add('page-number');
-                if (i === currentPage) {
-                    pageNumberDiv.classList.add('disabled');
-                }
-                paginationDiv.appendChild(pageNumberDiv);
-            }
+    // Create a "back" button
+    createButton(paginationDiv, '<', currentPage - 1);
 
-            // Create a "forward" button
-            var forwardDiv = document.createElement('div');
-            forwardDiv.textContent = '>';
-            forwardDiv.onclick = function() {
-                if (currentPage !== totalPages) {
-                    displayPage(currentPage + 1);
-                }
-            };
-            forwardDiv.classList.add('page-number');
-            if (currentPage === totalPages) {
-                forwardDiv.classList.add('disabled');
-            }
-            paginationDiv.appendChild(forwardDiv);
+    // Display page numbers
+    for (let i = start; i <= end; i++) {
+        createButton(paginationDiv, i, i);
+    }
 
-            // Create a "farthest forward" button
-            var farthestForwardDiv = document.createElement('div');
-            farthestForwardDiv.textContent = '>>';
-            farthestForwardDiv.onclick = function() {
-                if (currentPage !== totalPages) {
-                    displayPage(totalPages);
-                }
-            };
-            farthestForwardDiv.classList.add('page-number');
-            if (currentPage === totalPages) {
-                farthestForwardDiv.classList.add('disabled');
-            }
-            paginationDiv.appendChild(farthestForwardDiv);
+    // Create a "forward" button
+    createButton(paginationDiv, '>', currentPage + 1);
 
-            document.body.appendChild(paginationDiv);
-        }
+    // Create a "farthest forward" button
+    createButton(paginationDiv, '>>', totalPages);
+
+    document.body.appendChild(paginationDiv);
+}
+
+function createButton(container, text, pageNumber) {
+    var button = document.createElement('div');
+    button.textContent = text;
+    button.classList.add('page-number');
+    if (pageNumber === currentPage || pageNumber < 1 || pageNumber > totalPages) {
+        button.classList.add('disabled');
+    } else {
+        button.onclick = function() {
+            displayPage(pageNumber);
+        };
+    }
+    container.appendChild(button);
+}
     </script>
 </head>
 <body>
