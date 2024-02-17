@@ -3,47 +3,50 @@
 <head>
     <title>Drivebooru</title>
     <style>
-body {
-    background-color: #0f1936;
-    display: grid; /* Change this line */
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Add this line */
-    gap: 10px; /* Add this line */
-    justify-items: center; /* Add this line */
-    padding: 10px; /* Add this line */
-}
-.image-box {
-    background-color: #092e9a;
-    padding: 10px;
-    border-radius: 10px;
-    margin: 10px;
-    width: 150px; /* Add this line */
-}
-#pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #0f1936;
-}
-.page-number {
-    margin: 0 10px;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: #092e9a;
-    color: white;
-}
-.disabled {
-    color: gray;
-    cursor: not-allowed;
-}
+        body {
+            background-color: #0f1936;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .image-container { /* New class for the image container */
+            width: 150px;
+            background-color: #092e9a;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+        #pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+            background-color: #0f1936;
+        }
+        .page-number {
+            margin: 0 10px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #092e9a;
+            color: white;
+        }
+        .disabled {
+            color: gray;
+            cursor: not-allowed;
+        }
+        .download-button {
+            display: block;
+            margin: 10px auto;
+            padding: 5px 10px;
+            background-color: #092e9a;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.8em; /* Smaller text */
+        }
     </style>
-</head>
-<body>
-    <div id="image-container"></div> <!-- New image container -->
-    <div id="pagination"></div> <!-- New pagination container -->
     <script>
         var currentPage = 1;
         var imagesPerPage = 100;
@@ -55,13 +58,19 @@ body {
                 .then(data => {
                     lines = data.split('\n').filter(line => line.trim());
                     displayPage(currentPage);
-                    displayPagination(); // Move this inside the fetch promise chain
                 });
         };
 
         function displayPage(pageNumber) {
-            var imageContainer = document.getElementById('image-container'); // Get the image container
-            imageContainer.innerHTML = ''; // Clear the image container
+            var imagesDiv = document.getElementById('images');
+            if (!imagesDiv) {
+                imagesDiv = document.createElement('div');
+                imagesDiv.id = 'images';
+                document.body.appendChild(imagesDiv);
+            } else {
+                imagesDiv.innerHTML = ''; // Clear only the images div
+            }
+
             currentPage = pageNumber;
 
             var start = (pageNumber - 1) * imagesPerPage;
@@ -69,44 +78,36 @@ body {
             var pageLines = lines.slice(start, end);
 
             pageLines.forEach(line => {
-                // Create a new div for each image and its download button
-                const div = document.createElement('div');
-                div.style.width = '150px'; // Set the width of the div to match the width of the image
-
                 const img = document.createElement('img');
                 img.src = `https://drive.google.com/thumbnail?id=${line}&sz=w150`;
-                img.classList.add('image-box');
 
                 const a = document.createElement('a');
-                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
+                a.href = `https://drive.google.com/uc?id=${line}`;
                 a.target = '_blank';
 
                 a.appendChild(img);
 
                 // Create a download button
-                const downloadButton = document.createElement('button');
-                downloadButton.style.width = '100%'; // Make the button span the full width of the div
-                downloadButton.textContent = 'Download'; // Text as the button text
-                downloadButton.style.backgroundColor = '#092e9a'; // Match the button color with the image background
-                downloadButton.style.color = 'white'; // Set the button text color to white
-                downloadButton.style.border = 'none'; // Remove the default button border
-                downloadButton.style.padding = '10px'; // Add some padding to the button
-                downloadButton.style.cursor = 'pointer'; // Change the cursor to a pointer when hovering over the button
+                const downloadButton = document.createElement('a');
+                downloadButton.href = `https://drive.google.com/uc?export=download&id=${line}`; // Modified URL for direct download
+                downloadButton.download = '';
+                downloadButton.textContent = 'Download';
+                downloadButton.classList.add('download-button');
 
-                // Add an event listener to the button to trigger the download
-                downloadButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = `https://drive.google.com/uc?id=${line}`;
-                });
+                const div = document.createElement('div');
+                div.classList.add('image-container'); // Use the new class
+                div.appendChild(a);
+                div.appendChild(downloadButton); // Added the button to the div
 
-                div.appendChild(a); // Append the link element to the div
-                div.appendChild(downloadButton); // Append the download button to the div
-
-                imageContainer.appendChild(div); // Append the div to the image container
+                imagesDiv.appendChild(div); // Append to the images div
             });
+
+            displayPagination();
         }
 
         // Rest of your JavaScript code...
     </script>
+</head>
+<body>
 </body>
 </html>
