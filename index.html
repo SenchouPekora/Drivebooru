@@ -72,8 +72,10 @@
                 img.classList.add('image-box');
 
                 const a = document.createElement('a');
-                a.href = `https://drive.google.com/uc?id=${line}`; // Modified URL
-                a.target = '_blank';
+                a.href = `javascript:void(0)`; // Modified URL
+                a.onclick = function() {
+                    window.open(`viewer.html?id=${line}`, '_blank');
+                };
 
                 a.appendChild(img);
 
