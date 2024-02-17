@@ -13,8 +13,9 @@
             background-color: #0f1936;
         }
         iframe {
-            max-width: 100%;
-            height: auto;
+            width: 100%; /* Full width */
+            height: 80%; /* Adjust as needed */
+            border: none; /* Remove the default border */
         }
         button {
             margin-top: 20px;
@@ -27,7 +28,7 @@
     </style>
 </head>
 <body>
-    <iframe id="image" src="" width="640" height="480"></iframe>
+    <iframe id="image" src="" allowfullscreen></iframe> <!-- Allow fullscreen -->
     <button id="download">Download</button>
     <script>
         var params = new URLSearchParams(window.location.search);
