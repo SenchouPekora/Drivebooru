@@ -1,4 +1,4 @@
-# [Drivebooru](https://senchoupekora.github.io/drivebooru/)
+# [Drivebooru](https://senchoupekora.github.io/Drivebooru/)
 Imageboard using Google Drive to host images.
 
 - [ ] More features...
